@@ -2,7 +2,9 @@
 
 **Author:** Ervan Ade Wijaya
 **Repository:** `mileapp-fullstack-test`  
-**Stack:** Laravel 10 (PHP) + MongoDB + Vue 3 (Vite) + Pinia + Tailwind + Render + Vercel
+**Stack:**  
+- Laravel 10 + MongoDB + Vue 3 (Vite) + Pinia + Tailwind + Render + Vercel  
+- Express JS + MongoDB + Vue 3 (Vite) + Pinia + Tailwind + Render + Vercel  (alternative backend for Vercel deployment)
 
 ---
 
@@ -24,6 +26,7 @@ A small Task Management web application that implements:
 ## 2. Repo structure
 mileapp-fullstack-test/
 ├─ backend/ # Laravel 10 app (API)
+├─ backend-express/ # Express (API)
 ├─ frontend/ # Vue 3 app (UI)
 ├─ .github/workflows/ci-deploy.yml
 └─ README.md
@@ -34,6 +37,23 @@ mileapp-fullstack-test/
 ## 3. Design decisions & rationale
 
 ### Backend
+## 4. Backend Design Decisions
+
+### Laravel
+- Stable, widely supported framework  
+- MongoDB for database  
+- Indexes created via Artisan command `php artisan mongo:indexes`  
+- FormRequest validation for clean controllers  
+- Mock token-based authentication  
+- Swagger documentation via L5-Swagger at `/api/documentations`
+
+### Express
+- Lightweight, deployable to Vercel  
+- chosen because Railway/Laravel deployment requires a credit card, so can deploy via vercel.
+- Same MongoDB schema and indexes  
+- JWT-based authentication middleware  
+- Swagger via `swagger-jsdoc` + `swagger-ui-express`  
+- Serverless-friendly
 - **Laravel 10**: stable LTS-like release with widespread ecosystem support.
 - **MongoDB**: chosen per assignment; `MONGODB_URI` via Atlas for production, local MongoDB allowed for dev.
 - **Indexes**: created by an Artisan command `php artisan mongo:indexes` (see section “Indexes” (file /backend/app/console/CreateMongoIndexes)).
@@ -77,6 +97,13 @@ Open: http://localhost:5173
 
 # MileApp Express Backend
 
+cd backend-express
+npm install
+cp .env.example .env
+# Set MONGO_DB_URI and JWT_SECRET
+npm run dev
+
+```
 ## Overview
 This is the Express.js version of the MileApp backend (originally Laravel), including:
 - User authentication (mock JWT login)
@@ -84,14 +111,23 @@ This is the Express.js version of the MileApp backend (originally Laravel), incl
 - MongoDB (Atlas) as the database
 - Swagger API documentation
 
-## Design Decisions
-- **Express.js**: chosen because Railway/Laravel deployment requires a credit card and MongoDB PHP extensions were problematic.
-- **MongoDB Indexes**: used for `title`, `status`, and `priority` for fast queries.
-- **JWT Auth**: lightweight token-based authentication.
-- **Swagger Docs**: `/api/documentations` for easy API testing.
 
 ## Running Locally
 1. Install dependencies:
 
 ```bash
 npm install
+
+## 7. API Endpoint
+
+| Method | Endpoint   | Description     |
+| ------ | ---------- | --------------- |
+| POST   | /api/login | Login & get JWT |
+
+
+| Method | Endpoint       | Description                        |
+| ------ | -------------- | ---------------------------------- |
+| GET    | /api/tasks     | List tasks w/ filters & pagination |
+| POST   | /api/tasks     | Create a new task                  |
+| PUT    | /api/tasks/:id | Update a task by ID                |
+| DELETE | /api/tasks/:id | Delete a task by ID                |
