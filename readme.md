@@ -73,3 +73,25 @@ cp .env.example .env
 npm ci
 npm run dev
 Open: http://localhost:5173
+
+
+# MileApp Express Backend
+
+## Overview
+This is the Express.js version of the MileApp backend (originally Laravel), including:
+- User authentication (mock JWT login)
+- Task CRUD API with search, filter, sort, and pagination
+- MongoDB (Atlas) as the database
+- Swagger API documentation
+
+## Design Decisions
+- **Express.js**: chosen because Railway/Laravel deployment requires a credit card and MongoDB PHP extensions were problematic.
+- **MongoDB Indexes**: used for `title`, `status`, and `priority` for fast queries.
+- **JWT Auth**: lightweight token-based authentication.
+- **Swagger Docs**: `/api/documentations` for easy API testing.
+
+## Running Locally
+1. Install dependencies:
+
+```bash
+npm install
