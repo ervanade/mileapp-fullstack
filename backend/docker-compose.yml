@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/var/www
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=mongodb
+      - DB_HOST=mongodb
+      - DB_DATABASE=mileapp
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
